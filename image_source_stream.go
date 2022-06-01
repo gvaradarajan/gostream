@@ -46,7 +46,8 @@ func streamSource(ctx context.Context, once func(), is ImageSource, stream Strea
 			} else {
 				errorCount = 0
 			}
-			if (errorCount > 0) && (errorCount < maxSleepAttempts) {
+			if errorCount > 0 {
+				errorCount = int(math.Min(float64(errorCount), float64(maxSleepAttempts)))
 				dur := sleepTimeFromErrorCount(errorCount)
 				time.Sleep(time.Duration(dur))
 			}
